@@ -5,22 +5,35 @@ import "./App.css";
 import MyTable from "./MyTable";
 
 function App() {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [startTime, setStartTime] = useState({});
+  const [endTime, setEndTime] = useState({});
   const [timeArray, setTimeArray] = useState([]);
   const clickHandler = (isStartTime) => {
-    console.log(isStartTime);
-    const today = dayjs();
-    console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
+    // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
     if (isStartTime) {
-      setStartTime(today);
+      let start = dayjs();
+      console.log(`start: ${start}`);
+      setStartTime(start);
     } else {
-      setEndTime(today);
-      console.log(typeof endTime);
+      let end = dayjs(new Date());
+      console.log(`end: ${end}`);
+      setEndTime(end);
       setTimeArray([
         ...timeArray,
-        createData("right", startTime, endTime, endTime.diff(startTime, "m")),
+        // createData(
+        //   "right",
+        //   startTime,
+        //   endTime,
+        //   dayjs(endTime).diff(dayjs(startTime), "ms")
+        // ),
+        {
+          side: "right",
+          start: startTime,
+          end: endTime,
+          elapsed: dayjs(startTime).diff(dayjs(endTime), "ms"),
+        },
       ]);
+      console.log(`time Array: ${timeArray}`);
     }
   };
   const createData = (side, start, end, elapsed) => {
