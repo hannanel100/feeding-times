@@ -12,6 +12,7 @@ function Buttons(props) {
 
   const clickHandler = (e) => {
     if (e.target.innerHTML === "Left") {
+      props.side("Left");
       if (color.left === "primary" && color.right === "primary") {
         setColor({
           ...color,
@@ -24,6 +25,7 @@ function Buttons(props) {
         setRightDisabled(false);
       }
     } else {
+      props.side("Right");
       if (color.right === "primary" && color.left === "primary") {
         setColor({
           right: "secondary",
