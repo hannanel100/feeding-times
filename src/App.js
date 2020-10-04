@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as dayjs from "dayjs";
+
 import Buttons from "./Buttons";
 import "./App.css";
 import MyTable from "./MyTable";
+import Navbar from "./Navbar";
 
 function App() {
   const [startTime, setStartTime] = useState("");
@@ -37,6 +39,7 @@ function App() {
   };
   return (
     <>
+      <Navbar className="navbar" />
       <Buttons
         side={(chosenSide) => setSide(chosenSide)}
         timeClickHandler={(isStartTime) => clickHandler(isStartTime)}
