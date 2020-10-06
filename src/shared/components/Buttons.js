@@ -1,8 +1,20 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, makeStyles } from "@material-ui/core";
 import "./Buttons.css";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(2),
+    },
+  },
+  button: {
+    margin: "15px",
+  },
+}));
+
 function Buttons(props) {
+  const classes = useStyles();
   const [selected, setSelected] = useState("");
   const [color, setColor] = useState({ right: "primary", left: "primary" });
   const [rightDisabled, setRightDisabled] = useState(false);
@@ -45,7 +57,7 @@ function Buttons(props) {
         value="left"
         variant="contained"
         color={color.left}
-        className={className}
+        className={classes.button}
         onClick={(e) => {
           clickHandler(e);
           props.timeClickHandler(!rightDisabled);
@@ -58,7 +70,7 @@ function Buttons(props) {
         value="right"
         variant="contained"
         color={color.right}
-        className={className}
+        className={classes.button}
         onClick={(e) => {
           clickHandler(e);
           props.timeClickHandler(!leftDisabled);

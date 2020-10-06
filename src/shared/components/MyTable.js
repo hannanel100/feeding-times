@@ -1,20 +1,42 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import * as dayjs from "dayjs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  makeStyles,
+  withStyles,
+} from "@material-ui/core";
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary,
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.primary.main,
+    },
+    "&:nth-of-type(even)": {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
+}))(TableRow);
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(2),
+    },
+  },
+}));
 
 export default function myTable({ timeArray }) {
   const tableBody = timeArray ? (
     <TableBody>
       {timeArray.reverse().map((timeRow, index) => (
-        <TableRow key={index}>
+        <StyledTableRow key={index}>
           <TableCell component="th" scope="row">
             {timeArray.length - index}
           </TableCell>
@@ -26,7 +48,7 @@ export default function myTable({ timeArray }) {
             {dayjs(timeRow.end).format("DD/MM/YYYY - HH:mm:ss")}
           </TableCell>
           <TableCell align="right">{timeRow.elapsed}</TableCell>
-        </TableRow>
+        </StyledTableRow>
       ))}
     </TableBody>
   ) : null;
