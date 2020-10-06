@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory, useLocation } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider";
 import firebase from "firebase/app";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -23,7 +25,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-
+  const history = useHistory();
+  const authContext = useContext(AuthContext);
+  const location = useLocation();
+  const handleLogout = (event) => {
+    event.preventDefault();
+    firebase
+      .auth()
+      .signOut()
+      .then((res) => {
+        history.push("/auth/login");
+      });
+    console.log(authContext.user);
+  };
+  const buttonsSignupLogout = authContext.user ? (
+    <Button
+      color="inherit"
+      onClick={(e) => {
+        handleLogout(e);
+      }}
+    >
+      Logout
+    </Button>
+  ) : location.pathname === "/auth/login" ? (
+    <Button
+      color="inherit"
+      onClick={() => {
+        history.push("/auth/signup");
+      }}
+    >
+      Sign Up
+    </Button>
+  ) : (
+    <Button
+      color="inherit"
+      onClick={() => {
+        history.push("/auth/login");
+      }}
+    >
+      Login
+    </Button>
+  );
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -37,17 +79,9 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            Feeding Times
           </Typography>
-          <Button
-            color="inherit"
-            onClick={() => {
-              const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-              firebase.auth().signInWithPopup(googleAuthProvider);
-            }}
-          >
-            Login
-          </Button>
+          {buttonsSignupLogout}
         </Toolbar>
       </AppBar>
     </div>
