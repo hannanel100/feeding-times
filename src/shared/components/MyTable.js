@@ -1,5 +1,6 @@
 import React from "react";
 import * as dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import {
   Table,
   TableBody,
@@ -11,7 +12,6 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core";
-import { MyTable } from ".";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -33,22 +33,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const myTable = ({ timeArray }) => {
+const MyTable = ({ timeArray }) => {
+  dayjs.extend(relativeTime);
+  let coppiedTimeArray = [];
+  if (timeArray) {
+    coppiedTimeArray = JSON.parse(JSON.stringify(timeArray)).reverse();
+  }
   const tableBody = timeArray ? (
     <TableBody>
-      {timeArray.reverse().map((timeRow, index) => (
+      {coppiedTimeArray.map((timeRow, index) => (
         <StyledTableRow key={index}>
           <TableCell component="th" scope="row">
             {timeArray.length - index}
           </TableCell>
-          <TableCell align="right">{timeRow.side}</TableCell>
-          <TableCell align="right">
+          <TableCell align="center">{timeRow.side}</TableCell>
+          <TableCell align="center">
             {dayjs(timeRow.start).format("DD/MM/YYYY - HH:mm:ss")}
           </TableCell>
-          <TableCell align="right">
+          <TableCell align="center">
             {dayjs(timeRow.end).format("DD/MM/YYYY - HH:mm:ss")}
           </TableCell>
-          <TableCell align="right">{timeRow.elapsed}</TableCell>
+          <TableCell align="center">{timeRow.elapsed}</TableCell>
+          <TableCell align="center">
+            {index > 0 ? dayjs().from(coppiedTimeArray[index + 1]) : null}
+          </TableCell>
         </StyledTableRow>
       ))}
     </TableBody>
@@ -63,6 +71,7 @@ const myTable = ({ timeArray }) => {
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Time</TableCell>
             <TableCell align="center">Elapsed Time</TableCell>
+            <TableCell align="center">Time Since Previous Feeding</TableCell>
           </TableRow>
         </TableHead>
         {tableBody}
