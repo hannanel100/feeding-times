@@ -20,8 +20,6 @@ function Buttons(props) {
   const [rightDisabled, setRightDisabled] = useState(false);
   const [leftDisabled, setLeftDisabled] = useState(false);
 
-  let className = "button";
-
   const clickHandler = (e) => {
     if (e.target.innerHTML === "Left") {
       props.side("Left");
