@@ -12,6 +12,7 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core";
+import formatTime from "../utils/formatTime";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -53,9 +54,14 @@ const MyTable = ({ timeArray }) => {
           <TableCell align="center">
             {dayjs(timeRow.end).format("DD/MM/YYYY - HH:mm:ss")}
           </TableCell>
-          <TableCell align="center">{timeRow.elapsed}</TableCell>
           <TableCell align="center">
-            {index > 0 ? dayjs().from(coppiedTimeArray[index + 1]) : null}
+            {formatTime(Math.floor(timeRow.elapsed / 1000))}
+          </TableCell>
+          <TableCell align="center">
+            {index > 0
+              ? // ? dayjs().from(coppiedTimeArray[index - 1].start)
+                console.log(index)
+              : console.log(coppiedTimeArray)}
           </TableCell>
         </StyledTableRow>
       ))}
