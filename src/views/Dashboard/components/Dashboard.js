@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import firebase from "../../../firebase";
-import "firebase/firestore";
 import * as dayjs from "dayjs";
 
 import { Buttons, MyTable } from "../../../shared/components/index";
@@ -11,7 +8,6 @@ const Dashboard = () => {
   const [endTime, setEndTime] = useState("");
   const [side, setSide] = useState("");
   const [timeArray, setTimeArray] = useState([]);
-  const history = useHistory();
 
   const clickHandler = (isStartTime) => {
     // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
@@ -43,8 +39,6 @@ const Dashboard = () => {
     <>
       <h1>Dashboard</h1>
       <h2>Welcome to Dashboard!</h2>
-      <br />
-      <br />
 
       <Buttons
         side={(chosenSide) => setSide(chosenSide)}

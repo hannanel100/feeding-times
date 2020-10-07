@@ -11,6 +11,7 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core";
+import { MyTable } from ".";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function myTable({ timeArray }) {
+const myTable = ({ timeArray }) => {
   const tableBody = timeArray ? (
     <TableBody>
       {timeArray.reverse().map((timeRow, index) => (
@@ -68,4 +69,6 @@ export default function myTable({ timeArray }) {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default MyTable;
