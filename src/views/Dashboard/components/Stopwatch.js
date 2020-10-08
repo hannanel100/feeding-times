@@ -16,20 +16,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 const StyledTimer = withStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.primary.main,
     width: "30%",
     textAlign: "center",
     borderRadius: "10px",
-    boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
+    boxShadow:
+      "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
   },
 }))(Typography);
-const Stopwatch = ({ time }) => {
-  const classes = useStyles();
-
+const Stopwatch = ({ time, bgColor }) => {
+  const classes = useStyles(time);
   return (
     <>
       <div id="stopwatch" className={classes.container}>
-        <StyledTimer variant="h2" className={classes.root}>
+        <StyledTimer variant="h2" className={(classes.root, bgColor)}>
           {formatTime(time)}
         </StyledTimer>
       </div>
