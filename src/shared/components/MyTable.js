@@ -35,14 +35,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyTable = ({ timeArray }) => {
+  const MILLISECONDS_IN_SECOND = 1000;
   dayjs.extend(relativeTime);
-  let coppiedTimeArray = [];
+  let coppiedTimeArrayReversed = [];
   if (timeArray) {
-    coppiedTimeArray = JSON.parse(JSON.stringify(timeArray)).reverse();
+    coppiedTimeArrayReversed = JSON.parse(JSON.stringify(timeArray)).reverse();
   }
   const tableBody = timeArray ? (
     <TableBody>
-      {coppiedTimeArray.map((timeRow, index) => (
+      {coppiedTimeArrayReversed.map((timeRow, index) => (
         <StyledTableRow key={index}>
           <TableCell component="th" scope="row">
             {timeArray.length - index}
@@ -55,13 +56,12 @@ const MyTable = ({ timeArray }) => {
             {dayjs(timeRow.end).format("DD/MM/YYYY - HH:mm:ss")}
           </TableCell>
           <TableCell align="center">
-            {formatTime(Math.floor(timeRow.elapsed / 1000))}
+            {formatTime(Math.floor(timeRow.elapsed / MILLISECONDS_IN_SECOND))}
           </TableCell>
           <TableCell align="center">
-            {index > 0
-              ? // ? dayjs().from(coppiedTimeArray[index - 1].start)
-                console.log(index)
-              : console.log(coppiedTimeArray)}
+            {dayjs(timeRow.start).from(
+              dayjs(coppiedTimeArrayReversed[index].end)
+            )}
           </TableCell>
         </StyledTableRow>
       ))}
