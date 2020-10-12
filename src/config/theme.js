@@ -1,5 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
+const font = "'Quicksand', sans-serif";
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -7,6 +8,12 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#f2cf1d",
+    },
+  },
+  typography: {
+    fontFamily: font,
+    button: {
+      textTransform: "none",
     },
   },
 });
