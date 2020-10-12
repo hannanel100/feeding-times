@@ -29,7 +29,10 @@ const Dashboard = () => {
   const [timeArray, setTimeArray] = useState([]);
   const [timer, setTimer] = useState(0);
   const [bgColor, setBgColor] = useState(classes.primaryBg);
+  const [buttonActive, setButtonActive] = useState(true);
   const countRef = useRef(null);
+  const MILLISECONDS_IN_SECOND = 1000;
+
   const clickHandler = (isStartTime) => {
     // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
     if (isStartTime) {
@@ -38,14 +41,15 @@ const Dashboard = () => {
       setBgColor(classes.secondaryBg);
       countRef.current = setInterval(() => {
         setTimer((timer) => timer + 1);
-      }, 1000);
+      }, MILLISECONDS_IN_SECOND);
+      setButtonActive(false);
     } else {
       let end = dayjs(new Date());
       setEndTime(end);
       setBgColor(classes.primaryBg);
-
       setTimer(0);
       clearInterval(countRef.current);
+      setButtonActive(true);
     }
   };
   useEffect(() => {
@@ -72,7 +76,9 @@ const Dashboard = () => {
         side={(chosenSide) => setSide(chosenSide)}
         timeClickHandler={(isStartTime) => clickHandler(isStartTime)}
       />
-      <MyTable timeArray={endTime ? timeArray : null} />
+      <MyTable
+        timeArray={buttonActive || timeArray.length > 0 ? timeArray : null}
+      />
     </>
   );
 };

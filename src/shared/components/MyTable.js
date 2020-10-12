@@ -59,9 +59,11 @@ const MyTable = ({ timeArray }) => {
             {formatTime(Math.floor(timeRow.elapsed / MILLISECONDS_IN_SECOND))}
           </TableCell>
           <TableCell align="center">
-            {dayjs(timeRow.start).from(
-              dayjs(coppiedTimeArrayReversed[index].end)
-            )}
+            {index === coppiedTimeArrayReversed.length - 1
+              ? null
+              : dayjs(coppiedTimeArrayReversed[index + 1].end).from(
+                  dayjs(timeRow.start)
+                )}
           </TableCell>
         </StyledTableRow>
       ))}
