@@ -15,40 +15,43 @@ const useStyles = makeStyles((theme) => ({
 
 function Buttons(props) {
   const classes = useStyles();
-  const [selected, setSelected] = useState("");
   const [color, setColor] = useState({ right: "primary", left: "primary" });
   const [rightDisabled, setRightDisabled] = useState(false);
   const [leftDisabled, setLeftDisabled] = useState(false);
 
   const clickHandler = (e) => {
-    if (e.target.innerHTML === "Left") {
-      props.side("Left");
-      if (color.left === "primary" && color.right === "primary") {
-        setColor({
-          ...color,
-          left: "secondary",
-        });
+    if (color.left === "primary" && color.right === "primary") {
+      props.isStartTime(false);
+      if (e.currentTarget.value === "left") {
         setRightDisabled(true);
-        setSelected(e.target.innerHTML);
+        setColor((prevState) => {
+          return { ...prevState, left: "secondary" };
+        });
+        props.side("Left");
       } else {
-        setColor({ ...color, left: "primary" });
-        setRightDisabled(false);
+        setLeftDisabled(true);
+        setColor((prevState) => {
+          return { ...prevState, right: "secondary" };
+        });
+        props.side("Right");
       }
     } else {
-      props.side("Right");
-      if (color.right === "primary" && color.left === "primary") {
-        setColor({
-          right: "secondary",
-          left: "primary",
+      props.isStartTime(true);
+      if (e.currentTarget.value === "left") {
+        setRightDisabled(false);
+        setColor((prevState) => {
+          return { ...prevState, left: "primary" };
         });
-        setLeftDisabled(true);
-        setSelected(e.target.innerHTML);
       } else {
-        setColor({ ...color, right: "primary" });
         setLeftDisabled(false);
+        setColor((prevState) => {
+          return { ...prevState, right: "primary" };
+        });
       }
     }
+    props.timeClickHandler();
   };
+
   return (
     <div>
       <Button
@@ -58,7 +61,6 @@ function Buttons(props) {
         className={classes.button}
         onClick={(e) => {
           clickHandler(e);
-          props.timeClickHandler(!rightDisabled);
         }}
         disabled={leftDisabled}
       >
@@ -71,7 +73,6 @@ function Buttons(props) {
         className={classes.button}
         onClick={(e) => {
           clickHandler(e);
-          props.timeClickHandler(!leftDisabled);
         }}
         disabled={rightDisabled}
       >

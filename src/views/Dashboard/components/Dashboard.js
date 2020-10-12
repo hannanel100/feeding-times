@@ -30,11 +30,13 @@ const Dashboard = () => {
   const [timer, setTimer] = useState(0);
   const [bgColor, setBgColor] = useState(classes.primaryBg);
   const [buttonActive, setButtonActive] = useState(true);
+  const [isStartTime, setIsStartTime] = useState(true);
   const countRef = useRef(null);
   const MILLISECONDS_IN_SECOND = 1000;
 
-  const clickHandler = (isStartTime) => {
+  const clickHandler = () => {
     // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
+    console.log(`isStartTime: ${isStartTime}`);
     if (isStartTime) {
       let start = dayjs();
       setStartTime(start);
@@ -74,7 +76,8 @@ const Dashboard = () => {
       <Stopwatch time={timer} bgColor={bgColor} />
       <Buttons
         side={(chosenSide) => setSide(chosenSide)}
-        timeClickHandler={(isStartTime) => clickHandler(isStartTime)}
+        isStartTime={(isStartTime) => setIsStartTime(isStartTime)}
+        timeClickHandler={() => clickHandler()}
       />
       <MyTable
         timeArray={buttonActive || timeArray.length > 0 ? timeArray : null}
