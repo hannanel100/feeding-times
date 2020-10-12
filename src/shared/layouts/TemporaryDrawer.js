@@ -1,5 +1,16 @@
+import React from "react";
 
+import { makeStyles } from "@material-ui/core/styles";
 
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ChildFriendlyIcon from "@material-ui/icons/ChildFriendly";
+import BarChartIcon from "@material-ui/icons/BarChart";
+import SettingsIcon from "@material-ui/icons/Settings";
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -9,44 +20,44 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TemporaryDrawer({ isOpen, toggleDrawer }) {
+export default function TemporaryDrawer(props) {
   const classes = useStyles();
 
   const list = () => (
     <div
       className={classes.fullList}
       role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
+      onClick={props.toggleDrawer(false)}
+      onKeyDown={props.toggleDrawer(false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["About", "Summary", "Settings"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {index === 0 ? (
+                <ChildFriendlyIcon />
+              ) : index === 1 ? (
+                <BarChartIcon />
+              ) : (
+                <SettingsIcon />
+              )}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </div>
   );
 
   return (
     <div>
       <>
-        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
+        <Drawer
+          anchor="left"
+          open={props.isOpen}
+          onClose={props.toggleDrawer(false)}
+        >
           {list()}
         </Drawer>
       </>

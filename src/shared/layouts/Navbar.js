@@ -9,14 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+
+import TemporaryDrawer from "./TemporaryDrawer";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -43,7 +37,7 @@ export default function Navbar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = (booleanValue) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -51,7 +45,7 @@ export default function Navbar() {
       return;
     }
 
-    setIsOpen(!open);
+    setIsOpen(booleanValue);
   };
   const handleLogout = (event) => {
     event.preventDefault();
@@ -91,65 +85,27 @@ export default function Navbar() {
       Login
     </Button>
   );
-  const list = () => (
-    <div
-      className={classes.fullList}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Button
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            onClick={toggleDrawer}
-            toggleDrawer={toggleDrawer}
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
           >
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          </Button>
-          <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
-            {list()}
-          </Drawer>
+            <MenuIcon />
+          </IconButton>{" "}
           <Typography variant="h6" className={classes.title}>
             Feeding Times
           </Typography>
           {buttonsSignupLogout}
         </Toolbar>
       </AppBar>
+      <TemporaryDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
     </div>
   );
 }
