@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider";
 import firebase from "firebase/app";
@@ -9,8 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import TemporaryDrawer from "./TemporaryDrawer";
+import PermanentDrawer from "./PermanentDrawer";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -31,12 +32,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 //adding something
 export default function Navbar() {
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
+  const desktop = useMediaQuery(theme.breakpoints.down("lg"));
   const classes = useStyles();
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(`mobile: ${mobile}`);
   const toggleDrawer = (booleanValue) => (event) => {
     if (
       event.type === "keydown" &&
@@ -85,6 +89,13 @@ export default function Navbar() {
       Login
     </Button>
   );
+  const drawer = (isOpen, toggleDrawer) => {
+    if (mobile) {
+      return <TemporaryDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />;
+    } else {
+      return <PermanentDrawer />;
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -105,7 +116,7 @@ export default function Navbar() {
           {buttonsSignupLogout}
         </Toolbar>
       </AppBar>
-      <TemporaryDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
+      {drawer(isOpen, toggleDrawer)}
     </div>
   );
 }
