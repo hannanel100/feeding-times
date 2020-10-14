@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(2),
+      width: "calc(100% - 240px)",
     },
   },
 

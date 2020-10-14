@@ -9,16 +9,45 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import TemporaryDrawer from "./TemporaryDrawer";
-import PermanentDrawer from "./PermanentDrawer";
+
+import Drawer from "@material-ui/core/Drawer";
+import DrawerLinks from "./DrawerLinks";
+import { Hidden } from "@material-ui/core";
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
     flexGrow: 1,
     marginBottom: "15px",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  appBar: {
+    [theme.breakpoints.up("sm")]: {
+      width: `100%`,
+      marginLeft: drawerWidth,
+    },
+    [theme.breakpoints.up("xl")]: {
+      width: "1920px",
+      marginLeft: drawerWidth,
+    },
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
   },
   title: {
     flexGrow: 1,
@@ -33,14 +62,13 @@ const useStyles = makeStyles((theme) => ({
 //adding something
 export default function Navbar() {
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const desktop = useMediaQuery(theme.breakpoints.down("lg"));
+
   const classes = useStyles();
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const location = useLocation();
+
   const [isOpen, setIsOpen] = useState(false);
-  console.log(`mobile: ${mobile}`);
   const toggleDrawer = (booleanValue) => (event) => {
     if (
       event.type === "keydown" &&
@@ -89,17 +117,15 @@ export default function Navbar() {
       Login
     </Button>
   );
-  const drawer = (isOpen, toggleDrawer) => {
-    if (mobile) {
-      return <TemporaryDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />;
-    } else {
-      return <PermanentDrawer />;
-    }
-  };
+  const drawer = (
+    <div className={classes.toolbar}>
+      <DrawerLinks />
+    </div>
+  );
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -116,7 +142,26 @@ export default function Navbar() {
           {buttonsSignupLogout}
         </Toolbar>
       </AppBar>
-      {drawer(isOpen, toggleDrawer)}
+      <nav className={classes.drawer}>
+        <Hidden smUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
+            open={isOpen}
+            onClose={toggleDrawer(false)}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            <DrawerLinks />
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer variant="permanent" open>
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
     </div>
   );
 }
