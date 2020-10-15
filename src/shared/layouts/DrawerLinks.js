@@ -24,18 +24,14 @@ export default function DrawerLinks() {
   let list = (
     <div className={classes.fullList} role="presentation">
       <List>
-        {["About", "Summary", "Settings"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index === 0 ? (
-                <ChildFriendlyIcon color="primary" />
-              ) : index === 1 ? (
-                <BarChartIcon color="primary" />
-              ) : (
-                <SettingsIcon color="primary" />
-              )}
-            </ListItemIcon>
-            <ListItemText primary={text} />
+        {[
+          { name: "About", icon: <ChildFriendlyIcon color="primary" /> },
+          { name: "Summary", icon: <BarChartIcon color="primary" /> },
+          { name: "Settings", icon: <SettingsIcon color="primary" /> },
+        ].map((obj, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>{obj.icon}</ListItemIcon>
+            <ListItemText primary={obj.name} />
           </ListItem>
         ))}
       </List>
