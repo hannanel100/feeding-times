@@ -35,7 +35,7 @@ jobs:
             REACT_APP_ID: ${{ secrets.REACT_APP_ID }}  
             REACT_APP_MEASUREMENT_ID: ${{ secrets.REACT_APP_MEASUREMENT_ID }}
       - name: Deploy
-        uses: hannanel100/github-pages-deploy-action@releases/v3
+        uses: hannanel100/feeding-times
         with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
                   BRANCH: gh-pages
