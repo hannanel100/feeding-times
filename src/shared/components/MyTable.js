@@ -25,16 +25,28 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
+const drawerWidth = "240px";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(2),
     },
+    table: {
+      [theme.breakpoints.up("sm")]: {
+        width: `100vw`,
+        marginLeft: drawerWidth,
+      },
+      [theme.breakpoints.up("xl")]: {
+        width: "1920px",
+        marginLeft: drawerWidth,
+      },
+    },
   },
 }));
 
 const MyTable = ({ timeArray }) => {
+  const classes = useStyles();
+
   const MILLISECONDS_IN_SECOND = 1000;
   dayjs.extend(relativeTime);
   let coppiedTimeArrayReversed = [];
@@ -70,7 +82,7 @@ const MyTable = ({ timeArray }) => {
     </TableBody>
   ) : null;
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.table}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>

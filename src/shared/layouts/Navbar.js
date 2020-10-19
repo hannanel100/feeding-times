@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider";
 import firebase from "firebase/app";
@@ -10,14 +10,44 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
-import TemporaryDrawer from "./TemporaryDrawer";
+import Drawer from "@material-ui/core/Drawer";
+import DrawerLinks from "./DrawerLinks";
+import { Hidden } from "@material-ui/core";
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
     flexGrow: 1,
     marginBottom: "15px",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  appBar: {
+    [theme.breakpoints.up("sm")]: {
+      width: `100%`,
+      marginLeft: drawerWidth,
+    },
+    [theme.breakpoints.up("xl")]: {
+      width: "1920px",
+      marginLeft: drawerWidth,
+    },
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
   },
   title: {
     flexGrow: 1,
@@ -31,12 +61,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 //adding something
 export default function Navbar() {
+  const theme = useTheme();
+
   const classes = useStyles();
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = (booleanValue) => (event) => {
     if (
       event.type === "keydown" &&
@@ -85,10 +117,33 @@ export default function Navbar() {
       Login
     </Button>
   );
+  let drawer;
+  if (location.pathname === "/auth/login") {
+    drawer = (
+      <div className={classes.toolbar}>
+        <DrawerLinks />
+      </div>
+    );
+  } else if (location.pathname === "/auth/signup") {
+    drawer = (
+      <div className={classes.toolbar}>
+        <DrawerLinks />
+      </div>
+    );
+  } else {
+    drawer = null;
+  }
+  console.log(drawer);
+  // const drawer =
+  //   location.pathname === "/auth/login" || "/auth/signup" ? null : (
+  //     <div className={classes.toolbar}>
+  //       <DrawerLinks />
+  //     </div>
+  //   );
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -105,7 +160,26 @@ export default function Navbar() {
           {buttonsSignupLogout}
         </Toolbar>
       </AppBar>
-      <TemporaryDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
+      <nav className={classes.drawer}>
+        <Hidden smUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
+            open={isOpen}
+            onClose={toggleDrawer(false)}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}{" "}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer variant="permanent" open>
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
     </div>
   );
 }
