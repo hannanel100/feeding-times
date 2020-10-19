@@ -8,6 +8,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ChildFriendlyIcon from "@material-ui/icons/ChildFriendly";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import SettingsIcon from "@material-ui/icons/Settings";
+import TableChartIcon from "@material-ui/icons/TableChart";
+import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   list: {
@@ -16,23 +18,51 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  link: {
+    textDecoration: "none",
+    color: "black",
+  },
 });
 
 export default function DrawerLinks() {
   const classes = useStyles();
-  console.log();
+  const location = useLocation();
+  const listItems = [
+    {
+      name: "About",
+      path: "/about",
+      icon: <ChildFriendlyIcon color="primary" />,
+    },
+    {
+      name: "Summary",
+      path: "/summary",
+      icon: <BarChartIcon color="primary" />,
+    },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <TableChartIcon color="primary" />,
+    },
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: <SettingsIcon color="primary" />,
+    },
+  ];
+  let filteredListItems = listItems.filter(
+    (el) => el.path !== location.pathname
+  );
   let list = (
     <div className={classes.fullList} role="presentation">
+      <Divider />
       <List>
-        {[
-          { name: "About", icon: <ChildFriendlyIcon color="primary" /> },
-          { name: "Summary", icon: <BarChartIcon color="primary" /> },
-          { name: "Settings", icon: <SettingsIcon color="primary" /> },
-        ].map((obj, index) => (
-          <ListItem button key={index}>
-            <ListItemIcon>{obj.icon}</ListItemIcon>
-            <ListItemText primary={obj.name} />
-          </ListItem>
+        {filteredListItems.map((obj, index) => (
+          <Link to={obj.path} className={classes.link}>
+            <ListItem button key={index}>
+              <ListItemIcon>{obj.icon}</ListItemIcon>
+              <ListItemText primary={obj.name} />
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Divider />
