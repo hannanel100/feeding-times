@@ -117,29 +117,14 @@ export default function Navbar() {
       Login
     </Button>
   );
-  let drawer;
-  if (location.pathname === "/auth/login") {
-    drawer = (
+
+  const drawer =
+    location.pathname === "/auth/login" ? null : location.pathname ===
+      "/auth/signup" ? null : (
       <div className={classes.toolbar}>
         <DrawerLinks />
       </div>
     );
-  } else if (location.pathname === "/auth/signup") {
-    drawer = (
-      <div className={classes.toolbar}>
-        <DrawerLinks />
-      </div>
-    );
-  } else {
-    drawer = null;
-  }
-  console.log(drawer);
-  // const drawer =
-  //   location.pathname === "/auth/login" || "/auth/signup" ? null : (
-  //     <div className={classes.toolbar}>
-  //       <DrawerLinks />
-  //     </div>
-  //   );
 
   return (
     <div className={classes.root}>
