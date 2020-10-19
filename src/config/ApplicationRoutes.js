@@ -9,12 +9,17 @@ import { AuthRoutes } from "../views/Auth";
 import PrivateRoute from "../PrivateRoutes";
 import { DashboardRoutes } from "../views/Dashboard";
 import { Navbar } from "../shared/layouts";
+import { SummaryRoutes } from "../views/Summary";
+import { AboutRoutes } from "../views/About/config/AboutRoutes";
 const ApplicationRoutes = () => {
   return (
     <Router>
       <Navbar />
       <Switch>
         <PrivateRoute exact path="/dashboard" component={DashboardRoutes} />
+        <PrivateRoute exact path="/about" component={AboutRoutes} />
+        <PrivateRoute exact path="/summary" component={SummaryRoutes} />
+
         <Route path="/auth" component={AuthRoutes} />
         <Redirect to="/auth" from="/" />
       </Switch>

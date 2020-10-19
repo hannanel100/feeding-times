@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Drawer from "@material-ui/core/Drawer";
 import DrawerLinks from "./DrawerLinks";
@@ -18,20 +19,21 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexGrow: 1,
-    marginBottom: "15px",
-    alignContent: "center",
-    justifyContent: "center",
+    flexShrink: 0,
+
+    // marginBottom: "15px",
+    // alignContent: "center",
+    // justifyContent: "center",
   },
   appBar: {
     [theme.breakpoints.up("sm")]: {
-      width: `100%`,
+      width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
-    [theme.breakpoints.up("xl")]: {
-      width: "1920px",
-      marginLeft: drawerWidth,
-    },
+    // [theme.breakpoints.up("xl")]: {
+    //   width: "1920px",
+    //   marginLeft: drawerWidth,
+    // },
   },
   drawer: {
     [theme.breakpoints.up("sm")]: {
@@ -128,6 +130,7 @@ export default function Navbar() {
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
@@ -155,12 +158,21 @@ export default function Navbar() {
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
             }}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
           >
             {drawer}{" "}
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
-          <Drawer variant="permanent" open>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            open
+          >
             {drawer}
           </Drawer>
         </Hidden>
