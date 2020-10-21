@@ -31,16 +31,6 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(2),
     },
-    table: {
-      [theme.breakpoints.up("sm")]: {
-        width: `100vw`,
-        marginLeft: drawerWidth,
-      },
-      [theme.breakpoints.up("xl")]: {
-        width: "1920px",
-        marginLeft: drawerWidth,
-      },
-    },
   },
 }));
 
