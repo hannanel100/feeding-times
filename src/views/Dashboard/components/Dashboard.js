@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core";
-
+import * as firestore from '../../../firestore'
 import * as dayjs from "dayjs";
 
 import { Buttons, MyTable } from "../../../shared/components/index";
@@ -55,6 +55,14 @@ const Dashboard = () => {
       setButtonActive(true);
     }
   };
+  useEffect(() => {
+    if (user){
+      setTimeArray([..., firestore.getTimeListItems()])
+    }
+    return () => {
+      cleanup
+    }
+  }, [input])
   useEffect(() => {
     if (endTime) {
       setTimeArray([
