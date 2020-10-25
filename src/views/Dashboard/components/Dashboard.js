@@ -57,6 +57,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (endTime) {
+      console.log(dayjs(endTime).toString());
       dispatch({
         type: ADD_FEEDING_TIME,
         newFeedingTime: createData(
