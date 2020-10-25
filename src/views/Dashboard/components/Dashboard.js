@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import { makeStyles } from "@material-ui/core";
-
 import * as dayjs from "dayjs";
 
 import { Buttons, MyTable } from "../../../shared/components/index";
 import Stopwatch from "./Stopwatch";
-
+import { ADD_FEEDING_TIME, reducer } from "../../../reducer";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -23,18 +22,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Dashboard = () => {
   const classes = useStyles();
+  const initialState = [];
 
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [side, setSide] = useState("");
-  const [timeArray, setTimeArray] = useState([]);
   const [timer, setTimer] = useState(0);
   const [bgColor, setBgColor] = useState(classes.primaryBg);
   const [buttonActive, setButtonActive] = useState(true);
   const [isStartTime, setIsStartTime] = useState(true);
   const countRef = useRef(null);
   const MILLISECONDS_IN_SECOND = 1000;
-
+  const [timeArray, dispatch] = useReducer(reducer, initialState);
   const clickHandler = () => {
     // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
     console.log(`isStartTime: ${isStartTime}`);
@@ -55,17 +54,18 @@ const Dashboard = () => {
       setButtonActive(true);
     }
   };
+
   useEffect(() => {
     if (endTime) {
-      setTimeArray([
-        ...timeArray,
-        createData(
+      dispatch({
+        type: ADD_FEEDING_TIME,
+        newFeedingTime: createData(
           side,
           startTime,
           endTime,
           dayjs(endTime).diff(dayjs(startTime), "ms")
         ),
-      ]);
+      });
     }
   }, [endTime]);
   const createData = (side, start, end, elapsed) => {
