@@ -18,7 +18,7 @@ export const reducer = (state, action) => {
           side: action.newFeedingTime.side,
           start: dayjs(action.newFeedingTime.start).toString(),
           end: dayjs(action.newFeedingTime.end).toString(),
-          elapse: action.newFeedingTime.elapsed,
+          elapsed: action.newFeedingTime.elapsed,
         })
         .then(() => {
           console.log("ok");
