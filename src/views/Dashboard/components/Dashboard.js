@@ -66,18 +66,21 @@ const Dashboard = () => {
       setButtonActive(true);
     }
   };
-  useEffect(async () => {
-    if (uid) {
-      const data = [];
-      const rows = firebase.firestore().collection(uid);
-      const querySnapshot = await rows.get();
-      console.log(querySnapshot);
-      querySnapshot.forEach((doc, index) => {
-        console.log(doc.id, " => ", doc.data());
-        data.push(doc.data());
-      });
-      setTimeArray((timeArray) => [...timeArray, ...data]);
+  useEffect(() => {
+    async function fetchFromDb() {
+      if (uid) {
+        const data = [];
+        const rows = firebase.firestore().collection(uid);
+        const querySnapshot = await rows.get();
+        console.log(querySnapshot);
+        querySnapshot.forEach((doc, index) => {
+          console.log(doc.id, " => ", doc.data());
+          data.push(doc.data());
+        });
+        setTimeArray((timeArray) => [...timeArray, ...data]);
+      }
     }
+    fetchFromDb();
   }, []);
   console.log(timeArray);
   useEffect(() => {
