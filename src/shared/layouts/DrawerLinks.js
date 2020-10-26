@@ -57,7 +57,7 @@ export default function DrawerLinks() {
       <Divider />
       <List>
         {filteredListItems.map((obj, index) => (
-          <Link to={obj.path} className={classes.link}>
+          <Link to={obj.path} className={classes.link} key={index}>
             <ListItem button key={index}>
               <ListItemIcon>{obj.icon}</ListItemIcon>
               <ListItemText primary={obj.name} />

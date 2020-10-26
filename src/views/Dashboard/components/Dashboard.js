@@ -1,6 +1,15 @@
-import React, { useState, useEffect, useRef, useReducer } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useReducer,
+  useContext,
+} from "react";
 import { makeStyles } from "@material-ui/core";
 import * as dayjs from "dayjs";
+import firebase from "../../../firebase";
+import "firebase/auth";
+import { AuthContext } from "../../../AuthProvider";
 
 import { Buttons, MyTable } from "../../../shared/components/index";
 import Stopwatch from "./Stopwatch";
@@ -21,9 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Dashboard = () => {
+  const authContext = useContext(AuthContext);
+
   const classes = useStyles();
   const initialState = [];
-
+  const [timeArray, setTimeArray] = useState([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [side, setSide] = useState("");
@@ -33,10 +44,11 @@ const Dashboard = () => {
   const [isStartTime, setIsStartTime] = useState(true);
   const countRef = useRef(null);
   const MILLISECONDS_IN_SECOND = 1000;
-  const [timeArray, dispatch] = useReducer(reducer, initialState);
+  const [timeElement, dispatch] = useReducer(reducer, initialState);
+  const { uid } = authContext.user;
   const clickHandler = () => {
     // console.log(today.format("DD/MM/YYYY - HH:mm:ss"));
-    console.log(`isStartTime: ${isStartTime}`);
+
     if (isStartTime) {
       let start = dayjs();
       setStartTime(start);
@@ -54,23 +66,47 @@ const Dashboard = () => {
       setButtonActive(true);
     }
   };
-
+  useEffect(async () => {
+    if (uid) {
+      const data = [];
+      const rows = firebase.firestore().collection(uid);
+      const querySnapshot = await rows.get();
+      console.log(querySnapshot);
+      querySnapshot.forEach((doc, index) => {
+        console.log(doc.id, " => ", doc.data());
+        data.push(doc.data());
+      });
+      setTimeArray((timeArray) => [...timeArray, ...data]);
+    }
+  }, []);
+  console.log(timeArray);
   useEffect(() => {
     if (endTime) {
       console.log(dayjs(endTime).toString());
+      setTimeArray([
+        ...timeArray,
+        createData(
+          side,
+          startTime,
+          endTime,
+          dayjs(endTime).diff(dayjs(startTime), "ms"),
+          timeArray.length
+        ),
+      ]);
       dispatch({
         type: ADD_FEEDING_TIME,
         newFeedingTime: createData(
           side,
           startTime,
           endTime,
-          dayjs(endTime).diff(dayjs(startTime), "ms")
+          dayjs(endTime).diff(dayjs(startTime), "ms"),
+          timeArray.length
         ),
       });
     }
   }, [endTime]);
-  const createData = (side, start, end, elapsed) => {
-    return { side, start, end, elapsed };
+  const createData = (side, start, end, elapsed, index) => {
+    return { side, start, end, elapsed, index };
   };
   return (
     <>

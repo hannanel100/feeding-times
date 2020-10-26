@@ -89,7 +89,6 @@ export default function Navbar() {
       .then((res) => {
         history.push("/auth/login");
       });
-    console.log(authContext.user);
   };
   const buttonsSignupLogout = authContext.user ? (
     <Button

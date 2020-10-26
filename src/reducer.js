@@ -4,33 +4,39 @@ import * as dayjs from "dayjs";
 
 // import { AuthContext } from "./AuthProvider";
 export const ADD_FEEDING_TIME = "ADD_FEEDING_TIME";
+export const USER_AUTH = "USER_AUTH";
 
-export const reducer = (state, action) => {
+export const reducer = async (state, action) => {
   //   const authContext = useContext(AuthContext);
-  switch (action.type) {
-    case ADD_FEEDING_TIME:
-      const newState = [...state, action.newFeedingTime];
+  const { uid } = await firebase.auth().currentUser;
+  console.log(firebase.firestore.Timestamp);
+  if (uid) {
+    switch (action.type) {
+      case ADD_FEEDING_TIME:
+        const { newFeedingTime } = action;
+        const db = firebase.firestore();
+        db.collection(uid)
+          .doc(newFeedingTime.index + "")
+          .set(
+            {
+              side: newFeedingTime.side,
+              start: dayjs(newFeedingTime.start).toString(),
+              end: dayjs(newFeedingTime.end).toString(),
+              elapsed: newFeedingTime.elapsed,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("ok");
+          })
+          .catch((error) => {
+            console.log(error.message);
+            alert(error.message);
+          });
+        return newFeedingTime;
 
-      const db = firebase.firestore();
-      db.collection("Feeding-Times")
-        .doc("test")
-        .set({
-          side: action.newFeedingTime.side,
-          start: dayjs(action.newFeedingTime.start).toString(),
-          end: dayjs(action.newFeedingTime.end).toString(),
-          elapsed: action.newFeedingTime.elapsed,
-        })
-        .then(() => {
-          console.log("ok");
-        })
-        .catch((error) => {
-          console.log(error.message);
-          alert(error.message);
-        });
-      console.log(action.newFeedingTime);
-      return newState;
-
-    default:
-      return state;
+      default:
+        return state;
+    }
   }
 };

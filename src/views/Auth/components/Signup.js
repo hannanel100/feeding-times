@@ -38,7 +38,6 @@ const SignUp = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(values, "values");
     firebase
       .auth()
       .createUserWithEmailAndPassword(values.email, values.password)

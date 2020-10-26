@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { User, auth } from "firebase";
 import { Grid, TextField, Button, makeStyles } from "@material-ui/core";
 import firebase from "../../../firebase";
 import "firebase/auth";
@@ -36,13 +35,11 @@ const Login = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(authContext);
     firebase
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then((res) => {
         authContext.setUser(res);
-        console.log(res, "res");
         history.push("/dashboard");
       })
       .catch((error) => {
