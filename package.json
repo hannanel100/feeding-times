@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "http://hannanel100.github.io/feeding-times",
   "dependencies": {
+    "@iconify/icons-mdi": "^1.0.149",
+    "@iconify/react": "^1.1.3",
     "@material-ui/core": "^4.9.11",
     "@material-ui/icons": "^4.9.1",
     "@react-firebase/auth": "^0.2.10",
@@ -26,7 +28,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-
   },
   "eslintConfig": {
     "extends": "react-app"

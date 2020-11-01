@@ -9,6 +9,7 @@ import { AuthRoutes } from "../views/Auth";
 import PrivateRoute from "../PrivateRoutes";
 import { DashboardRoutes } from "../views/Dashboard";
 import { Navbar } from "../shared/layouts";
+import {Footer} from "../shared/layouts/"
 import { SummaryRoutes } from "../views/Summary";
 import { SettingsRoutes } from "../views/Settings";
 
@@ -26,6 +27,7 @@ const ApplicationRoutes = () => {
         <Route path="/auth" component={AuthRoutes} />
         <Redirect to="/auth" from="/" />
       </Switch>
+      <Footer />
     </Router>
   );
 };
